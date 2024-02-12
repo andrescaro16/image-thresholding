@@ -134,10 +134,17 @@ int main(int argc, char* argv[]) {
     vector<vector<Pixel>> matriz = leerArchivoBMP(nombreArchivoLecturaBMP);
 
     // Umbralizar la matriz
+    std::cout << std::endl << "MEDICIÓN DE FORMA SECUENCIAL. .........." << std::endl;
+    auto start_time = std::chrono::high_resolution_clock::now();
+
     umbralizarMatriz(matriz, umbral);
 
     // Guardar la matriz en un nuevo archivo BMP
     guardarMatrizEnBMP(nombreArchivoEscrituraBMP, matriz);
+
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto duracion = std::chrono::duration_cast<std::chrono::microseconds> (end_time-start_time);
+    std::cout << "tiempo secuencial: "<< duracion.count() << std::endl;
 
     return 0;
 }

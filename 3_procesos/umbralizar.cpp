@@ -126,6 +126,9 @@ int main(int argc, char* argv[]) {
     // Leer el archivo BMP y obtener la matriz de píxeles
     vector<vector<Pixel>> matriz = leerArchivoBMP(nombreArchivoLecturaBMP);
 
+    std::cout << std::endl << "MEDICIÓN DE FORMA PROCESOS. .........." << std::endl;
+    auto start_time = std::chrono::high_resolution_clock::now();
+
     // Umbralizar la matriz utilizando múltiples procesos
     int numProcesos = sysconf(_SC_NPROCESSORS_ONLN);
     int tamanoBloque = matriz.size() / numProcesos;
@@ -155,7 +158,11 @@ int main(int argc, char* argv[]) {
     int status;
     for (int i = 0; i < numProcesos; ++i) {
         waitpid(pids[i], &status, 0);
-    }
+    }   
+
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto duracion = std::chrono::duration_cast<std::chrono::microseconds> (end_time-start_time);
+    std::cout << "tiempo procesos: "<< duracion.count() << std::endl;
 
     return 0;
 }

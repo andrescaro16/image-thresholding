@@ -147,6 +147,9 @@ int main(int argc, char* argv[]) {
     // Leer el archivo BMP y obtener la matriz de píxeles
     vector<vector<Pixel>> matriz = leerArchivoBMP(nombreArchivoLecturaBMP);
 
+    std::cout << std::endl << "MEDICIÓN DE FORMA HILOS. .........." << std::endl;
+    auto start_time = std::chrono::high_resolution_clock::now();
+
     // Umbralizar la matriz utilizando multihilos
     int numHilos = thread::hardware_concurrency();
     vector<thread> hilos(numHilos);
@@ -162,6 +165,10 @@ int main(int argc, char* argv[]) {
 
     // Guardar la matriz en un nuevo archivo BMP
     guardarMatrizEnBMP(nombreArchivoEscrituraBMP, matriz);
+
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto duracion = std::chrono::duration_cast<std::chrono::microseconds> (end_time-start_time);
+    std::cout << "tiempo hilos: "<< duracion.count() << std::endl;
 
     return 0;
 }
